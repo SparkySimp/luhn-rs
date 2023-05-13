@@ -37,20 +37,33 @@
 // }
 // /// ```
 
-use crate::lib::is_valid;
 use rand::Rng;
 use std::env;
 
 fn main() {
+    // this simple independent command line utility can both generate card numbers with `luhn generate` and check if a given number is valid with `luhn check`
     let args: Vec<String> = env::args().collect();
-    if args.len() != 2 {
-        println!("Usage: {} <number>", args[0]);
+    if args.len() != 3 || args.len() != 2 {
+        println!("Usage: {} <generate|check> <number>", args[0]);
         return;
     }
-    let number = &args[1];
-    if is_valid(number) {
-        println!("Valid");
-    } else {
-        println!("Invalid");
+    let command = &args[1];
+    let number = &args[2];
+    match command.as_str() {
+        "generate" if args.len() == 2 => {
+            println!("{}", luhn::generate());
+        }
+        "check" if args.len() == 3 => {
+            if luhn::is_valid(number) {
+                println!("Valid");
+            } else {
+                println!("Invalid");
+            }
+        }
+
+        _ => {
+            println!("Usage: {} <generate|check> <number>", args[0]);
+            return;
+        }
     }
 }
