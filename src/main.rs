@@ -37,7 +37,7 @@
 // }
 // /// ```
 
-use std::env;
+use std::{env, process};
 
 fn main() {
     // this simple independent command line utility can both generate card numbers with `luhn generate` and check if a given number is valid with `luhn check`
@@ -55,8 +55,10 @@ fn main() {
         "check" if args.len() == 3 => {
             if luhn::is_valid(number) {
                 println!("Valid");
+                process::exit(0);
             } else {
                 println!("Invalid");
+                process::exit(1);
             }
         }
 
